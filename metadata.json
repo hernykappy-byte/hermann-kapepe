@@ -1,8 +1,0 @@
-{
-  "name": "Grand Quiz",
-  "description": "World\u0027s leading social quiz and engagement platform connecting communities through daily competition and No Repeat questions.",
-  "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}

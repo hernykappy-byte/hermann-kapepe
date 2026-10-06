@@ -1,29 +1,11 @@
-# Grand Quiz - World Quiz Platform
+# Grrand Quiz
+Next.js 16 on Vercel. Server-authoritative rounds (signed tokens), personal stats in the browser, Supabase schema ready for accounts and rankings.
 
-An interactive full-stack trivia platform featuring real-time blitz rounds, regional & team standings, AI question generation with per-option factual breakdowns, and offline question fallbacks.
-
-## Quick Start
-
-### 1. Install Dependencies
-```bash
+```
 npm install
-```
-
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env`:
-```bash
-cp .env.example .env
-```
-Provide your `GEMINI_API_KEY` in `.env` (optional: the application includes a comprehensive built-in offline question bank if no API key is set).
-
-### 3. Run Development Server
-```bash
+cp .env.example .env.local   # set GRRAND_SECRET (openssl rand -base64 48)
 npm run dev
 ```
-Open your browser at `http://localhost:3000`.
+Checks: `npm run typecheck`, `check:contrast`, `check:bank`, `check:schema`, `npx tsx scripts/test-engine.ts`.
 
-### 4. Build for Production
-```bash
-npm run build
-npm start
-```
+Question drafting: `POST /api/admin/generate` with `Authorization: Bearer $ADMIN_TOKEN` and `{"category":"zambia","count":8}`. Gemini drafts, Claude optionally verifies, nothing is saved; a person reviews. See `docs/GATE_REPORT.md` for what is and isn't verified.
