@@ -1,11 +1,29 @@
-<div align="center">
+# Grand Quiz - World Quiz Platform
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+An interactive full-stack trivia platform featuring real-time blitz rounds, regional & team standings, AI question generation with per-option factual breakdowns, and offline question fallbacks.
 
-  <h1>Built with AI Studio</h2>
+## Quick Start
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+Provide your `GEMINI_API_KEY` in `.env` (optional: the application includes a comprehensive built-in offline question bank if no API key is set).
 
-</div>
+### 3. Run Development Server
+```bash
+npm run dev
+```
+Open your browser at `http://localhost:3000`.
+
+### 4. Build for Production
+```bash
+npm run build
+npm start
+```
