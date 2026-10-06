@@ -216,3 +216,16 @@ a { color: var(--action-hover); text-underline-offset: 0.18em; }
 /* Icons inside controls and links need an explicit size. */
 .btn svg, .suggest svg, .link-btn svg { width: 1.25rem; height: 1.25rem; flex: none; }
 .daily-meta > span:first-child { min-width: 0; }
+
+/* Accounts, boards, teams */
+select { min-height: 3rem; padding: 0 var(--s3); border: 2px solid var(--border-ui); border-radius: var(--r-control); font: inherit; background: #fff; color: var(--text); max-width: 100%; }
+.form-err { color: var(--miss-text); font-weight: 700; margin-block: var(--s3); }
+.controls { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; margin-block: var(--s4); }
+.seg-tabs { display: inline-flex; border: 2px solid var(--border-ui); border-radius: var(--r-control); overflow: hidden; }
+.seg-tab { min-height: 2.75rem; padding: 0 var(--s4); border: 0; background: var(--surface); color: var(--text); font: inherit; font-weight: 700; cursor: pointer; }
+.seg-tab + .seg-tab { border-inline-start: 2px solid var(--border-ui); }
+.seg-tab[aria-selected="true"] { background: var(--action); color: var(--action-text); }
+.table tr.me { background: var(--surface-alt); font-weight: 800; }
+.team-list { list-style: none; padding: 0; margin: var(--s4) 0; display: grid; gap: var(--s3); }
+.team { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); border: 2px solid var(--rule); border-radius: var(--r-control); padding: var(--s3) var(--s4); }
+.team .btn { min-height: 2.75rem; flex: none; }

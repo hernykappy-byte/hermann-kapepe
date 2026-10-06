@@ -56,6 +56,18 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
   const [left, setLeft] = useState(20000);
   const [retry, setRetry] = useState<string | null>(null);
   const [summary, setSummary] = useState<Summary | null>(null);
+  const [ranked, setRanked] = useState<string | null>(null);
+
+  // Ranked scores come from the server-signed round token, never from this page.
+  const saveRanked = useCallback(async (finishToken: string) => {
+    try {
+      const r = await fetch("/api/results", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ token: finishToken }) });
+      const d = await r.json();
+      if (r.ok) setRanked(d.recorded ? "Saved to the rankings." : d.reason || null);
+      else if (r.status === 401) setRanked("Sign in on the Me tab to put your daily score on the rankings.");
+      else if (r.status === 409) setRanked(d.error || null);
+    } catch { /* offline or accounts not set up: the round still counts on this device */ }
+  }, []);
   const [copied, setCopied] = useState(false);
 
   const busy = useRef(false);
@@ -140,6 +152,7 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
       if (i + 1 >= start.questions.length) {
         const f = await post<FinishResponse>("/api/round/finish", { token });
         recordRound(f);
+        void saveRanked(token);
         setSummary({
           mode: f.mode, day: f.day, category: f.category, points: f.points, correct: f.correct, total: f.total, grid: f.grid,
           detail: { base: f.basePoints, perfect: f.perfectBonus, fresh: f.freshness },
@@ -239,6 +252,7 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
           <section className="stage" aria-labelledby="sum-h">
             <h1 id="sum-h" className="sr">Round complete</h1>
             <p className="muted">{summary.mode === "daily" ? `Daily round · ${summary.day}` : catName}{summary.replay ? " · already played today" : ""}</p>
+            {ranked && <p className="muted" role="status">{ranked}</p>}
             <p className="tally">{summary.correct}<small>of {summary.total} correct</small></p>
             <div className="grid-result" role="img" aria-label={summary.grid.map((g, k) => `Question ${k + 1} ${g === "hit" ? "correct" : "missed"}`).join(", ")}>
               {summary.grid.map((g, k) => (<span key={k} className={`cell ${g}`}>{g === "hit" ? <Check /> : <Dash />}</span>))}

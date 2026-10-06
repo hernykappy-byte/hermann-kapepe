@@ -16,6 +16,11 @@ function clock(ms: number) {
 export default function Home({ cats }: { cats: CatInfo[] }) {
   const [local, setLocal] = useState<Local | null>(null);
   const [left, setLeft] = useState<number | null>(null);
+  const [players, setPlayers] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/stats", { cache: "no-store" }).then((r) => r.json()).then((d) => { if (d.enabled && d.playersToday > 0) setPlayers(d.playersToday); }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     setLocal(load());
@@ -52,6 +57,7 @@ export default function Home({ cats }: { cats: CatInfo[] }) {
           </span>
         </div>
         <h2 id="daily-h">Daily round</h2>
+        {players !== null && <p className="muted">{players.toLocaleString()} signed-in {players === 1 ? "player has" : "players have"} finished today’s round.</p>}
         {done ? (
           <>
             <p className="muted">

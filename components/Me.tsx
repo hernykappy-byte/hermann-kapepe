@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { load, streak, wipe, type Local } from "@/lib/local";
+import AccountPanel from "./Account";
 
 export default function Me() {
   const [s, setS] = useState<Local | null>(null);
@@ -12,7 +13,7 @@ export default function Me() {
   return (
     <>
       <h1>Your stats</h1>
-      <p className="lede">Kept on this device only. Nothing here is sent anywhere.</p>
+      <p className="lede">These numbers are kept on this device. Signing in adds your daily round to the rankings.</p>
       {empty ? (
         <div className="empty">
           <h2>No rounds yet</h2>
@@ -28,10 +29,7 @@ export default function Me() {
           <div className="stat"><b>{s.perfects}</b><span>Perfect rounds</span></div>
         </div>
       )}
-      <div className="panel">
-        <h2>Accounts</h2>
-        <p><span className="status">Planned</span>Sign in to keep your streak across devices and join school and city rankings. Not switched on yet.</p>
-      </div>
+      <AccountPanel />
       {!empty && (
         <button
           className="btn secondary"

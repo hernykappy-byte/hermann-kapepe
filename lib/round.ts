@@ -161,3 +161,11 @@ export function finishRound(tokenIn: unknown): FinishResponse | Err {
     day: s.day, category: s.cat, mode: s.mode, questionIds: s.qids,
   };
 }
+
+/** Finish result plus what the server needs to rank it. Used by the results route. */
+export function verifyFinished(tokenIn: unknown): { res: FinishResponse; rid: string; at: number } | Err {
+  const res = finishRound(tokenIn);
+  if ("error" in res) return res;
+  const s = verify<RoundState>(tokenIn) as RoundState;
+  return { res, rid: s.rid, at: s.t };
+}

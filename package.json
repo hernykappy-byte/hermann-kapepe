@@ -2,7 +2,7 @@
   "name": "grrand-quiz",
   "version": "3.0.0",
   "private": true,
-  "description": "Grrand Quiz — social quiz platform. Next.js on Vercel, Supabase for accounts and rankings.",
+  "description": "Grrand Quiz \u2014 social quiz platform. Next.js on Vercel, Supabase for accounts and rankings.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -10,16 +10,19 @@
     "typecheck": "tsc --noEmit",
     "check:contrast": "python3 scripts/contrast.py tokens.json",
     "check:bank": "node --experimental-strip-types scripts/check-bank.ts",
-    "check:schema": "node --experimental-strip-types scripts/check-schema.ts"
+    "check:schema": "node --experimental-strip-types scripts/check-schema.ts",
+    "test:data": "tsx scripts/test-data.mts"
   },
   "dependencies": {
     "next": "^16.3.8",
+    "pg": "^8.23.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@electric-sql/pglite": "^0.3.0",
     "@types/node": "^22.14.0",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "tsx": "^4.23.15",

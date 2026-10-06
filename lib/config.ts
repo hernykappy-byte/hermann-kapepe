@@ -12,3 +12,6 @@ export const CREDIT = {
   title: "Founder of Witty Enterprises",
   role: "Product Designer, UI Architect and UX Designer",
 };
+
+export const CITIES = ["Lusaka", "Kitwe", "Ndola", "Kabwe", "Livingstone", "Chipata", "Kasama", "Solwezi", "Mansa", "Mongu", "Choma", "Elsewhere"] as const;
+export const TEAM_KINDS = ["school", "class", "crew"] as const;
