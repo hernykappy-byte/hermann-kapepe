@@ -13,5 +13,6 @@
 | Bank size | GAP | 170 questions (14 to 16 per category); players see repeats from about round 3. Use the generator, then a human review |
 | Benchmark parity (G) | UNVERIFIED | See BENCHMARKS.md |
 | Live on Vercel with a database | NOT YET | Needs `DATABASE_URL` set in Vercel; until then Ranks, Teams and sign-in show "Needs setup" |
-| Admin generator | BUILT, INERT | Needs GEMINI_API_KEY and ADMIN_TOKEN in Vercel; Claude check needs ANTHROPIC_API_KEY |
+| Admin generator + checkers | BUILT, INERT | Mock-tested: auth, duplicate drop, malformed drop, multi-checker disagreement flagged, `npm run test:questions`. Not yet run with real keys. Needs GEMINI_API_KEY and ADMIN_TOKEN in Vercel; free checkers need GROQ_API_KEY or CEREBRAS_API_KEY |
+| Bank deduplication across paraphrases | BASIC | Word-overlap filter only; smarter dedupe is a later task |
 | Real devices / slow network | NOT TESTED | Desktop Chromium only |

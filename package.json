@@ -11,7 +11,9 @@
     "check:contrast": "python3 scripts/contrast.py tokens.json",
     "check:bank": "node --experimental-strip-types scripts/check-bank.ts",
     "check:schema": "node --experimental-strip-types scripts/check-schema.ts",
-    "test:data": "tsx scripts/test-data.mts"
+    "test:data": "tsx scripts/test-data.mts",
+    "test:questions": "tsx scripts/test-questions.mts",
+    "questions": "tsx scripts/questions.mts"
   },
   "dependencies": {
     "next": "^16.3.8",
