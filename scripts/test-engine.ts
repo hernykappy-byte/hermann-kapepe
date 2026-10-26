@@ -131,14 +131,14 @@ ok("daily round is identical for everyone on the same day, differs next day", ()
 ok("no-repeat: unseen questions come first, repeats only after exhaustion", () => {
   const seen: string[] = [];
   let firstRepeatRound = -1;
-  for (let r = 0; r < 6; r++) {
+  for (let r = 0; r < 30; r++) {
     const s: any = startRound({ mode: "category", category: "tech", seen }, 9_000_000 + r);
     if (s.repeats > 0 && firstRepeatRound < 0) firstRepeatRound = r;
     if (firstRepeatRound < 0) for (const q of s.questions) assert.ok(!seen.includes(q.id), "repeat before exhaustion");
     for (const q of s.questions) if (!seen.includes(q.id)) seen.push(q.id);
   }
   console.log("      first round with a repeat:", firstRepeatRound + 1, "(bank has", BANK.filter((q) => q.cat === "tech").length, "tech questions)");
-  assert.ok(firstRepeatRound >= 2);
+  assert.ok(firstRepeatRound >= 2, "repeats should only start after several rounds, and must eventually happen once questions run out");
 });
 
 ok("every category can build a round", () => {

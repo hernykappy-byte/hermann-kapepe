@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { BANK, CATEGORIES } from "@/lib/bank";
+import { findDuplicate } from "@/lib/similar";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -12,13 +13,6 @@ const CLAUDE_MODEL = process.env.CLAUDE_VERIFY_MODEL || "claude-sonnet-5-5";
 
 type Draft = { q: string; options: string[]; answer: number; diff: "E" | "M" | "H"; fact: string };
 type Verdict = { ok: boolean; note: string };
-
-const words = (s: string) => new Set(s.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 2));
-function jaccard(a: Set<string>, b: Set<string>) {
-  let i = 0;
-  for (const w of a) if (b.has(w)) i++;
-  return i / (a.size + b.size - i || 1);
-}
 
 function authed(req: Request) {
   const want = process.env.ADMIN_TOKEN;
@@ -155,7 +149,6 @@ export async function POST(req: Request) {
   const existing = BANK.filter((q) => q.cat === cat.id);
   try {
     const raw = await gemini(cat.name, cat.blurb, n, existing.map((q) => q.q));
-    const existingW = BANK.map((q) => words(q.q));
     const kept: Draft[] = [];
     let dupes = 0, malformed = 0;
     for (const d of raw) {
@@ -164,8 +157,7 @@ export async function POST(req: Request) {
         new Set(d.options.map((o) => o.trim().toLowerCase())).size === 4 &&
         Number.isInteger(d.answer) && d.answer >= 0 && d.answer <= 3 && ["E", "M", "H"].includes(d.diff) && !!d.fact;
       if (!valid) { malformed++; continue; }
-      const w = words(d.q);
-      if (existingW.some((e) => jaccard(w, e) > 0.6) || kept.some((k) => jaccard(w, words(k.q)) > 0.6)) { dupes++; continue; }
+      if (findDuplicate(d, BANK) || findDuplicate(d, kept)) { dupes++; continue; }
       kept.push(d);
     }
     const checked = await review(kept);

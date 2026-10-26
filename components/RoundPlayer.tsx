@@ -20,6 +20,7 @@ type Summary = {
   grid: ("hit" | "miss")[];
   detail?: { base: number; perfect: number; fresh: number };
   replay?: boolean;
+  card?: string;
 };
 
 const LETTERS = ["A", "B", "C", "D"];
@@ -99,7 +100,7 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
     if (mode === "daily") {
       const d = local.daily[lusakaDay()];
       if (d) {
-        setSummary({ mode, day: lusakaDay(), category: null, points: d.points, correct: d.correct, total: d.total, grid: d.grid, replay: true });
+        setSummary({ mode, day: lusakaDay(), category: null, points: d.points, correct: d.correct, total: d.total, grid: d.grid, replay: true, card: d.card });
         setPhase("summary");
         return;
       }
@@ -154,7 +155,7 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
         recordRound(f);
         void saveRanked(token);
         setSummary({
-          mode: f.mode, day: f.day, category: f.category, points: f.points, correct: f.correct, total: f.total, grid: f.grid,
+          mode: f.mode, day: f.day, category: f.category, points: f.points, correct: f.correct, total: f.total, grid: f.grid, card: f.card,
           detail: { base: f.basePoints, perfect: f.perfectBonus, fresh: f.freshness },
         });
         setPhase("summary");
@@ -215,7 +216,7 @@ export default function RoundPlayer({ mode, category, cats }: Props) {
     if (!summary) return "";
     const squares = summary.grid.map((g) => (g === "hit" ? "🟩" : "🟪")).join("");
     const head = summary.mode === "daily" ? `Grrand Quiz daily ${summary.day}` : `Grrand Quiz · ${catName ?? "Round"}`;
-    return `${head}\n${summary.correct}/${summary.total} · ${summary.points.toLocaleString()} pts\n${squares}\nPlay: ${SITE.url}`;
+    return `${head}\n${summary.correct}/${summary.total} · ${summary.points.toLocaleString()} pts\n${squares}\nPlay: ${summary.card ? `${SITE.url}/r/${summary.card}` : SITE.url}`;
   }, [summary, catName]);
 
   const copy = async () => {

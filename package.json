@@ -13,7 +13,10 @@
     "check:schema": "node --experimental-strip-types scripts/check-schema.ts",
     "test:data": "tsx scripts/test-data.mts",
     "test:questions": "tsx scripts/test-questions.mts",
-    "questions": "tsx scripts/questions.mts"
+    "questions": "tsx scripts/questions.mts",
+    "test:similar": "tsx scripts/test-similar.ts",
+    "merge:drafts": "tsx scripts/merge-drafts.mts",
+    "apply:verified": "tsx scripts/apply-verified.mts"
   },
   "dependencies": {
     "next": "^16.3.8",

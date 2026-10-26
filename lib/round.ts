@@ -9,6 +9,13 @@ import type { AnswerResponse, FinishResponse, NextResponse, PublicQuestion, Star
 // (Duolingo ends sessions on a deliberately easier item.)
 const RAMP: Diff[] = ["E", "M", "H", "M", "E"];
 
+export type CardPayload = { k: "card"; m: "daily" | "category"; d: string | null; c: string | null; ok: number; n: number; p: number; g: string };
+
+export function readCard(token: unknown): CardPayload | null {
+  const c = verify<CardPayload>(token);
+  return c && c.k === "card" && (c.m === "daily" || c.m === "category") && /^[01]{1,10}$/.test(c.g) ? c : null;
+}
+
 export type RoundState = {
   v: 1;
   rid: string;
@@ -154,9 +161,11 @@ export function finishRound(tokenIn: unknown): FinishResponse | Err {
   const base = s.pts.reduce((a, b) => a + b, 0);
   const perfect = correct === s.qids.length ? PERFECT_BONUS : 0;
   const fresh = s.fresh / 100;
+  const points = Math.round((base + perfect) * fresh);
   return {
+    card: sign<CardPayload>({ k: "card", m: s.mode, d: s.day, c: s.cat, ok: correct, n: s.qids.length, p: points, g: s.ok.join("") }),
     correct, total: s.qids.length, basePoints: base, perfectBonus: perfect, freshness: fresh,
-    points: Math.round((base + perfect) * fresh),
+    points,
     grid: s.ok.map((x) => (x ? "hit" : "miss")),
     day: s.day, category: s.cat, mode: s.mode, questionIds: s.qids,
   };

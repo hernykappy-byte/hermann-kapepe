@@ -5,7 +5,7 @@ import type { FinishResponse, StartResponse, AnswerResponse } from "./types";
 
 const KEY = "grrand:v3";
 
-export type DailyResult = { points: number; correct: number; total: number; grid: ("hit" | "miss")[] };
+export type DailyResult = { points: number; correct: number; total: number; grid: ("hit" | "miss")[]; card?: string };
 export type PlayLog = { cat: string; ts: number };
 
 export type ActiveRound = {
@@ -79,7 +79,7 @@ export function recordRound(f: FinishResponse): Local {
   if (f.correct === f.total) s.perfects += 1;
   s.seen = [...s.seen.filter((id) => !f.questionIds.includes(id)), ...f.questionIds].slice(-600);
   if (f.mode === "category" && f.category) s.plays = [...s.plays, { cat: f.category, ts: Date.now() }].slice(-200);
-  if (f.mode === "daily" && f.day) s.daily[f.day] = { points: f.points, correct: f.correct, total: f.total, grid: f.grid };
+  if (f.mode === "daily" && f.day) s.daily[f.day] = { points: f.points, correct: f.correct, total: f.total, grid: f.grid, card: f.card };
   s.active = null;
   save(s);
   return s;

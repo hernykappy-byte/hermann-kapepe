@@ -49,4 +49,5 @@ export type FinishResponse = {
   category: string | null;
   mode: "daily" | "category";
   questionIds: string[];
+  card: string; // signed summary for the share page and image
 };

@@ -1,4 +1,5 @@
 import { BANK, CATEGORIES } from "../lib/bank.ts";
+import { similarity } from "../lib/similar.ts";
 
 let problems = 0;
 const fail = (m: string) => { problems++; console.log("FAIL", m); };
@@ -13,6 +14,11 @@ for (const q of BANK) {
   const key = q.q.trim().toLowerCase();
   if (seen.has(key)) fail(`${q.id}: duplicate question text of ${seen.get(key)}`);
   seen.set(key, q.id);
+}
+
+for (let i = 0; i < BANK.length; i++) for (let j = i + 1; j < BANK.length; j++) {
+  const s = similarity(BANK[i], BANK[j]);
+  if (s.reason) fail(`${BANK[i].id} and ${BANK[j].id} look like duplicates (${s.reason}): "${BANK[i].q}" / "${BANK[j].q}"`);
 }
 
 const letters = [0, 0, 0, 0];
